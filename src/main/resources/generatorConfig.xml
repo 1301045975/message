@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
+    <properties resource="generator.properties"/>
+    <context id="MySqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <!-- 为Model生成序列化方法-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <!-- 为Model模型创建一个toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+
+        <!--生成mapper.xml时覆盖原文件-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+
+
+        <!-- 指定如何连接数据库 -->
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.connectionURL}"
+                        userId="${jdbc.userId}"
+                        password="${jdbc.password}">
+            <!--解决mysql驱动升级到8.0后不生成指定数据库代码的问题-->
+            <property name="nullCatalogMeansCurrent" value="true" />
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+                NUMERIC 类型解析为java.math.BigDecimal -->
+            <property name="forceBigDecimals" value="true"/>
+            <!-- This property is used to specify whether MyBatis Generator should force the use of JSR-310 data types for DATE, TIME,
+                and TIMESTAMP fields, rather than using java.util.Date -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+
+        <!-- 指定Java Bean（Model）的生成策略 -->
+        <javaModelGenerator targetPackage="cn.swjtu.message.model" targetProject="src\main\java"/>
+
+        <!-- 指定SQL映射文件（xml文件）的生成策略 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src\main\resources"/>
+
+        <!-- 指定mapper接口的生成策略 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.swjtu.message.mapper"
+                             targetProject="src\main\java"/>
+
+        <!-- 指定要生成那些表 -->
+        <!--<table tableName="tableName1"></table>-->
+        <!--<table tableName="tableName2"></table>-->
+        <!--生成全部表时，将tableName设为%-->
+        <!--在生成比表时,可以指定一些参数-->
+        <!--<table tableName="%">-->
+        <!--    &lt;!&ndash;<generatedKey column="id" sqlStatement="MySql" identity="true"/>&ndash;&gt;-->
+        <!--    &lt;!&ndash;<property name="useActualColumnNames" value="true" />&ndash;&gt;-->
+        <!--</table>-->
+
+        <table tableName="performance">
+            <generatedKey column="per_id" sqlStatement="MySql"></generatedKey>
+        </table>
+<!--        <table tableName="broker">-->
+<!--            <generatedKey column="broker_id" sqlStatement="MySql"></generatedKey>-->
+<!--        </table>-->
+<!--        <table tableName="verify">-->
+<!--            <generatedKey column="verify_id" sqlStatement="MySql"></generatedKey>-->
+<!--        </table>-->
+
+    </context>
+</generatorConfiguration>

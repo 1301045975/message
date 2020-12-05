@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.swjtu.message.mapper.BrokerMapper">
+    <select id="selectBroker" parameterType="cn.swjtu.message.model.Broker" resultType="cn.swjtu.message.model.Broker">
+        select * from broker where 1=1
+            <if test="brokerMessage != null and brokerMessage != ''">
+                and broker_message=#{brokerMessage}
+            </if>
+            <if test="brokerDialog != null and brokerDialog != ''">
+                and broker_dialog=#{brokerDialog}
+            </if>
+            <if test="brokerUse != null and brokerUse != ''">
+                and broker_use=#{brokerUse}
+            </if>
+          <if test="brokerRemark != null and brokerRemark != ''">
+            and (broker_remark like concat('%%',#{brokerRemark},'%%') or broker_name like concat('%%',#{brokerRemark},'%%') or broker_mobile like concat('%%',#{brokerRemark},'%%'))
+          </if>
+
+        limit #{currentPage},#{pagesize}
+    </select>
+
+    <select id="selectBrokerCount" parameterType="cn.swjtu.message.model.Broker" resultType="Integer">
+        select count(broker_id) from broker where 1=1
+        <if test="brokerMessage != null and brokerMessage != ''">
+            and broker_message=#{brokerMessage}
+        </if>
+        <if test="brokerDialog != null and brokerDialog != ''">
+            and broker_dialog=#{brokerDialog}
+        </if>
+        <if test="brokerUse != null and brokerUse != ''">
+            and broker_use=#{brokerUse}
+        </if>
+        <if test="brokerRemark != null and brokerRemark != ''">
+            and (broker_remark like concat('%%',#{brokerRemark},'%%') or broker_name like concat('%%',#{brokerRemark},'%%') or broker_mobile like concat('%%',#{brokerRemark},'%%'))
+        </if>
+    </select>
+</mapper>
